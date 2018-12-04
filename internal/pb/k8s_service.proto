@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package pb;
+
+message CronJob {
+    string Name = 1;
+}
+
+message GetCronJobsRequest {
+}
+
+message GetCronJobsResponse {
+    repeated CronJob CronJobs = 1;
+}
+
+message GetCronJobRequest {
+    string Id = 1;
+}
+
+message GetCronJobResponse {
+    CronJob CronJob = 1;
+}
+
+message CreateCronJobsRequest {
+    string Template = 1;
+}
+
+message CreateCronJobsResponse {
+}
+
+message DeleteCronJobsRequest {
+    string Name = 1;
+}
+
+message DeleteCronJobsResponse {
+}
+
+service K8sService {
+    rpc GetCronJobs (GetCronJobsRequest) returns (GetCronJobsResponse) {
+    }
+    rpc GetCronJob (GetCronJobRequest) returns (GetCronJobResponse) {
+    }
+    rpc CreateCronJob (CreateCronJobsRequest) returns (CreateCronJobsResponse) {
+    }
+    rpc DeleteCronJob (DeleteCronJobsRequest) returns (DeleteCronJobsResponse) {
+    }
+}
