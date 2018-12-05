@@ -6,7 +6,19 @@ message CronJob {
     string Name = 1;
 }
 
+message GetConfigMapRequest {
+    string Kubeconfig = 1;
+    string Namespace = 2;
+    string Key = 3;
+}
+
+message GetConfigMapResponse {
+    string Config = 1;
+}
+
 message GetCronJobsRequest {
+    string Kubeconfig = 1;
+    string Namespace = 2;
 }
 
 message GetCronJobsResponse {
@@ -14,7 +26,9 @@ message GetCronJobsResponse {
 }
 
 message GetCronJobRequest {
-    string Id = 1;
+    string Kubeconfig = 1;
+    string Namespace = 2;
+    string Id = 3;
 }
 
 message GetCronJobResponse {
@@ -22,20 +36,26 @@ message GetCronJobResponse {
 }
 
 message CreateCronJobsRequest {
-    string Template = 1;
+    string Kubeconfig = 1;
+    string Namespace = 2;
+    string Template = 3;
 }
 
 message CreateCronJobsResponse {
 }
 
 message DeleteCronJobsRequest {
-    string Name = 1;
+    string Kubeconfig = 1;
+    string Namespace = 2;
+    string Name = 3;
 }
 
 message DeleteCronJobsResponse {
 }
 
 service K8sService {
+    rpc GetConfigMap (GetConfigMapRequest) returns (GetConfigMapResponse) {
+    }
     rpc GetCronJobs (GetCronJobsRequest) returns (GetCronJobsResponse) {
     }
     rpc GetCronJob (GetCronJobRequest) returns (GetCronJobResponse) {

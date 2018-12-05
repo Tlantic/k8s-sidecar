@@ -1,34 +1,37 @@
 package manager
 
 import (
-	"time"
-
+	"fmt"
 	batchv1 "k8s.io/api/batch/v1"
 	batchv1beta "k8s.io/api/batch/v1beta1"
+	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/wait"
+	informercorev1 "k8s.io/client-go/informers/core/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
+	"k8s.io/client-go/tools/cache"
 	"k8s.io/client-go/tools/clientcmd"
+	"time"
 )
 
-//KubeCronManager ...
-type KubeCronManager struct {
+//KubeManager ...
+type KubeManager struct {
 	client    *kubernetes.Clientset
 	jobs      map[string]*batchv1.Job
 	namespace string
 }
 
-type KubeCronManagerOptions struct {
+type KubeManagerOptions struct {
 	Config    string
 	Namespace string
 	Timeout   int
 }
 
-//NewKubeCron ...
-func NewKubeCron(options *KubeCronManagerOptions) (*KubeCronManager, error) {
+//NewKube ...
+func NewKube(options *KubeManagerOptions) (*KubeManager, error) {
 	var err error
-	k := new(KubeCronManager)
+	k := new(KubeManager)
 	k.namespace = options.Namespace
 
 	k.client, err = newKubeClientSet(options.Config, options.Timeout)
@@ -70,17 +73,41 @@ func newKubeClientSet(kubeconfig string, kubeTimeout int) (*kubernetes.Clientset
 	return client, nil
 }
 
+func (km *KubeManager) GetConfigMap(namespace string, name string) (*v1.ConfigMap, error) {
+	cfgMap, err := km.client.CoreV1().ConfigMaps(namespace).Get(name, metav1.GetOptions{})
+	return cfgMap, err
+
+}
+
+func (km *KubeManager) Watch(keys []string, namespace string, ch chan string, secretInformer informercorev1.ConfigMapInformer) {
+	secretInformer.Informer().AddEventHandler(
+		cache.ResourceEventHandlerFuncs{
+			UpdateFunc: func(oldObj, newObj interface{}) {
+				data := newObj.(*v1.ConfigMap)
+				key, _ := cache.MetaNamespaceKeyFunc(newObj)
+
+				for _, v := range keys {
+					if fmt.Sprintf("%s/%s", namespace, v) == key {
+						ch <- data.Name
+					}
+				}
+
+			},
+		},
+	)
+}
+
 /*
 * Cronjob Funcs
  */
 
 //GetCronJob ...
-func (km *KubeCronManager) GetCronJob(name string) (*batchv1beta.CronJob, error) {
+func (km *KubeManager) GetCronJob(name string) (*batchv1beta.CronJob, error) {
 	return km.client.BatchV1beta1().CronJobs(km.namespace).Get(name, metav1.GetOptions{})
 }
 
 //CreateCronJob ...
-func (km *KubeCronManager) CreateCronJob(job *batchv1beta.CronJob, wait bool) error {
+func (km *KubeManager) CreateCronJob(job *batchv1beta.CronJob, wait bool) error {
 	job.Spec.ConcurrencyPolicy = batchv1beta.ReplaceConcurrent
 	if _, err := km.client.BatchV1beta1().CronJobs(km.namespace).Create(job); err != nil {
 		return err
@@ -95,7 +122,7 @@ func (km *KubeCronManager) CreateCronJob(job *batchv1beta.CronJob, wait bool) er
 }
 
 //DeleteCronJob ...
-func (km *KubeCronManager) DeleteCronJob(name string) error {
+func (km *KubeManager) DeleteCronJob(name string) error {
 	policy := metav1.DeletePropagationBackground
 	return km.client.BatchV1beta1().CronJobs(km.namespace).Delete(name, &metav1.DeleteOptions{
 		PropagationPolicy: &policy,
@@ -103,12 +130,12 @@ func (km *KubeCronManager) DeleteCronJob(name string) error {
 }
 
 //ListCronJobs ...
-func (km *KubeCronManager) ListCronJobs() (*batchv1beta.CronJobList, error) {
+func (km *KubeManager) ListCronJobs() (*batchv1beta.CronJobList, error) {
 	return km.client.BatchV1beta1().CronJobs(km.namespace).List(metav1.ListOptions{})
 }
 
 //WaitForCronJob ...
-func (km *KubeCronManager) WaitForCronJob(name, namespace string, timeout time.Duration) error {
+func (km *KubeManager) WaitForCronJob(name, namespace string, timeout time.Duration) error {
 	return wait.Poll(time.Second*5, timeout, func() (bool, error) {
 		job, err := km.GetCronJob(name)
 		if err != nil {
@@ -126,22 +153,22 @@ func (km *KubeCronManager) WaitForCronJob(name, namespace string, timeout time.D
  */
 
 //GetJob ...
-func (km *KubeCronManager) GetJob(name string) (*batchv1.Job, error) {
+func (km *KubeManager) GetJob(name string) (*batchv1.Job, error) {
 	return km.client.BatchV1().Jobs(km.namespace).Get(name, metav1.GetOptions{})
 }
 
 //ListJobs ...
-func (km *KubeCronManager) ListJobs() (*batchv1.JobList, error) {
+func (km *KubeManager) ListJobs() (*batchv1.JobList, error) {
 	return km.client.BatchV1().Jobs(km.namespace).List(metav1.ListOptions{})
 }
 
 //DeleteJob ...
-func (km *KubeCronManager) DeleteJob(name string) error {
+func (km *KubeManager) DeleteJob(name string) error {
 	return km.client.BatchV1().Jobs(km.namespace).Delete(name, &metav1.DeleteOptions{})
 }
 
 //CreateJob ...
-func (km *KubeCronManager) CreateJob(job *batchv1.Job, wait bool) error {
+func (km *KubeManager) CreateJob(job *batchv1.Job, wait bool) error {
 	if _, err := km.client.BatchV1().Jobs(km.namespace).Create(job); err != nil {
 		return err
 	}
@@ -155,7 +182,7 @@ func (km *KubeCronManager) CreateJob(job *batchv1.Job, wait bool) error {
 }
 
 // WaitForJob waits until job deployment has completed
-func (km *KubeCronManager) WaitForJob(name, namespace string, timeout time.Duration) error {
+func (km *KubeManager) WaitForJob(name, namespace string, timeout time.Duration) error {
 	return wait.Poll(time.Second*5, timeout, func() (bool, error) {
 		job, err := km.GetJob(name)
 		if err != nil {

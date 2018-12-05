@@ -61,7 +61,103 @@ func (m *CronJob) GetName() string {
 	return ""
 }
 
+type GetConfigMapRequest struct {
+	Kubeconfig           string   `protobuf:"bytes,1,opt,name=Kubeconfig,proto3" json:"Kubeconfig,omitempty"`
+	Namespace            string   `protobuf:"bytes,2,opt,name=Namespace,proto3" json:"Namespace,omitempty"`
+	Key                  string   `protobuf:"bytes,3,opt,name=Key,proto3" json:"Key,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetConfigMapRequest) Reset()         { *m = GetConfigMapRequest{} }
+func (m *GetConfigMapRequest) String() string { return proto.CompactTextString(m) }
+func (*GetConfigMapRequest) ProtoMessage()    {}
+func (*GetConfigMapRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_7903244fefde60d5, []int{1}
+}
+
+func (m *GetConfigMapRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetConfigMapRequest.Unmarshal(m, b)
+}
+func (m *GetConfigMapRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetConfigMapRequest.Marshal(b, m, deterministic)
+}
+func (m *GetConfigMapRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetConfigMapRequest.Merge(m, src)
+}
+func (m *GetConfigMapRequest) XXX_Size() int {
+	return xxx_messageInfo_GetConfigMapRequest.Size(m)
+}
+func (m *GetConfigMapRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetConfigMapRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetConfigMapRequest proto.InternalMessageInfo
+
+func (m *GetConfigMapRequest) GetKubeconfig() string {
+	if m != nil {
+		return m.Kubeconfig
+	}
+	return ""
+}
+
+func (m *GetConfigMapRequest) GetNamespace() string {
+	if m != nil {
+		return m.Namespace
+	}
+	return ""
+}
+
+func (m *GetConfigMapRequest) GetKey() string {
+	if m != nil {
+		return m.Key
+	}
+	return ""
+}
+
+type GetConfigMapResponse struct {
+	Config               string   `protobuf:"bytes,1,opt,name=Config,proto3" json:"Config,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetConfigMapResponse) Reset()         { *m = GetConfigMapResponse{} }
+func (m *GetConfigMapResponse) String() string { return proto.CompactTextString(m) }
+func (*GetConfigMapResponse) ProtoMessage()    {}
+func (*GetConfigMapResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_7903244fefde60d5, []int{2}
+}
+
+func (m *GetConfigMapResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetConfigMapResponse.Unmarshal(m, b)
+}
+func (m *GetConfigMapResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetConfigMapResponse.Marshal(b, m, deterministic)
+}
+func (m *GetConfigMapResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetConfigMapResponse.Merge(m, src)
+}
+func (m *GetConfigMapResponse) XXX_Size() int {
+	return xxx_messageInfo_GetConfigMapResponse.Size(m)
+}
+func (m *GetConfigMapResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetConfigMapResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetConfigMapResponse proto.InternalMessageInfo
+
+func (m *GetConfigMapResponse) GetConfig() string {
+	if m != nil {
+		return m.Config
+	}
+	return ""
+}
+
 type GetCronJobsRequest struct {
+	Kubeconfig           string   `protobuf:"bytes,1,opt,name=Kubeconfig,proto3" json:"Kubeconfig,omitempty"`
+	Namespace            string   `protobuf:"bytes,2,opt,name=Namespace,proto3" json:"Namespace,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -71,7 +167,7 @@ func (m *GetCronJobsRequest) Reset()         { *m = GetCronJobsRequest{} }
 func (m *GetCronJobsRequest) String() string { return proto.CompactTextString(m) }
 func (*GetCronJobsRequest) ProtoMessage()    {}
 func (*GetCronJobsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_7903244fefde60d5, []int{1}
+	return fileDescriptor_7903244fefde60d5, []int{3}
 }
 
 func (m *GetCronJobsRequest) XXX_Unmarshal(b []byte) error {
@@ -92,6 +188,20 @@ func (m *GetCronJobsRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_GetCronJobsRequest proto.InternalMessageInfo
 
+func (m *GetCronJobsRequest) GetKubeconfig() string {
+	if m != nil {
+		return m.Kubeconfig
+	}
+	return ""
+}
+
+func (m *GetCronJobsRequest) GetNamespace() string {
+	if m != nil {
+		return m.Namespace
+	}
+	return ""
+}
+
 type GetCronJobsResponse struct {
 	CronJobs             []*CronJob `protobuf:"bytes,1,rep,name=CronJobs,proto3" json:"CronJobs,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}   `json:"-"`
@@ -103,7 +213,7 @@ func (m *GetCronJobsResponse) Reset()         { *m = GetCronJobsResponse{} }
 func (m *GetCronJobsResponse) String() string { return proto.CompactTextString(m) }
 func (*GetCronJobsResponse) ProtoMessage()    {}
 func (*GetCronJobsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_7903244fefde60d5, []int{2}
+	return fileDescriptor_7903244fefde60d5, []int{4}
 }
 
 func (m *GetCronJobsResponse) XXX_Unmarshal(b []byte) error {
@@ -132,7 +242,9 @@ func (m *GetCronJobsResponse) GetCronJobs() []*CronJob {
 }
 
 type GetCronJobRequest struct {
-	Id                   string   `protobuf:"bytes,1,opt,name=Id,proto3" json:"Id,omitempty"`
+	Kubeconfig           string   `protobuf:"bytes,1,opt,name=Kubeconfig,proto3" json:"Kubeconfig,omitempty"`
+	Namespace            string   `protobuf:"bytes,2,opt,name=Namespace,proto3" json:"Namespace,omitempty"`
+	Id                   string   `protobuf:"bytes,3,opt,name=Id,proto3" json:"Id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -142,7 +254,7 @@ func (m *GetCronJobRequest) Reset()         { *m = GetCronJobRequest{} }
 func (m *GetCronJobRequest) String() string { return proto.CompactTextString(m) }
 func (*GetCronJobRequest) ProtoMessage()    {}
 func (*GetCronJobRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_7903244fefde60d5, []int{3}
+	return fileDescriptor_7903244fefde60d5, []int{5}
 }
 
 func (m *GetCronJobRequest) XXX_Unmarshal(b []byte) error {
@@ -163,6 +275,20 @@ func (m *GetCronJobRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_GetCronJobRequest proto.InternalMessageInfo
 
+func (m *GetCronJobRequest) GetKubeconfig() string {
+	if m != nil {
+		return m.Kubeconfig
+	}
+	return ""
+}
+
+func (m *GetCronJobRequest) GetNamespace() string {
+	if m != nil {
+		return m.Namespace
+	}
+	return ""
+}
+
 func (m *GetCronJobRequest) GetId() string {
 	if m != nil {
 		return m.Id
@@ -181,7 +307,7 @@ func (m *GetCronJobResponse) Reset()         { *m = GetCronJobResponse{} }
 func (m *GetCronJobResponse) String() string { return proto.CompactTextString(m) }
 func (*GetCronJobResponse) ProtoMessage()    {}
 func (*GetCronJobResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_7903244fefde60d5, []int{4}
+	return fileDescriptor_7903244fefde60d5, []int{6}
 }
 
 func (m *GetCronJobResponse) XXX_Unmarshal(b []byte) error {
@@ -210,7 +336,9 @@ func (m *GetCronJobResponse) GetCronJob() *CronJob {
 }
 
 type CreateCronJobsRequest struct {
-	Template             string   `protobuf:"bytes,1,opt,name=Template,proto3" json:"Template,omitempty"`
+	Kubeconfig           string   `protobuf:"bytes,1,opt,name=Kubeconfig,proto3" json:"Kubeconfig,omitempty"`
+	Namespace            string   `protobuf:"bytes,2,opt,name=Namespace,proto3" json:"Namespace,omitempty"`
+	Template             string   `protobuf:"bytes,3,opt,name=Template,proto3" json:"Template,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -220,7 +348,7 @@ func (m *CreateCronJobsRequest) Reset()         { *m = CreateCronJobsRequest{} }
 func (m *CreateCronJobsRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateCronJobsRequest) ProtoMessage()    {}
 func (*CreateCronJobsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_7903244fefde60d5, []int{5}
+	return fileDescriptor_7903244fefde60d5, []int{7}
 }
 
 func (m *CreateCronJobsRequest) XXX_Unmarshal(b []byte) error {
@@ -241,6 +369,20 @@ func (m *CreateCronJobsRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_CreateCronJobsRequest proto.InternalMessageInfo
 
+func (m *CreateCronJobsRequest) GetKubeconfig() string {
+	if m != nil {
+		return m.Kubeconfig
+	}
+	return ""
+}
+
+func (m *CreateCronJobsRequest) GetNamespace() string {
+	if m != nil {
+		return m.Namespace
+	}
+	return ""
+}
+
 func (m *CreateCronJobsRequest) GetTemplate() string {
 	if m != nil {
 		return m.Template
@@ -258,7 +400,7 @@ func (m *CreateCronJobsResponse) Reset()         { *m = CreateCronJobsResponse{}
 func (m *CreateCronJobsResponse) String() string { return proto.CompactTextString(m) }
 func (*CreateCronJobsResponse) ProtoMessage()    {}
 func (*CreateCronJobsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_7903244fefde60d5, []int{6}
+	return fileDescriptor_7903244fefde60d5, []int{8}
 }
 
 func (m *CreateCronJobsResponse) XXX_Unmarshal(b []byte) error {
@@ -280,7 +422,9 @@ func (m *CreateCronJobsResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_CreateCronJobsResponse proto.InternalMessageInfo
 
 type DeleteCronJobsRequest struct {
-	Name                 string   `protobuf:"bytes,1,opt,name=Name,proto3" json:"Name,omitempty"`
+	Kubeconfig           string   `protobuf:"bytes,1,opt,name=Kubeconfig,proto3" json:"Kubeconfig,omitempty"`
+	Namespace            string   `protobuf:"bytes,2,opt,name=Namespace,proto3" json:"Namespace,omitempty"`
+	Name                 string   `protobuf:"bytes,3,opt,name=Name,proto3" json:"Name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -290,7 +434,7 @@ func (m *DeleteCronJobsRequest) Reset()         { *m = DeleteCronJobsRequest{} }
 func (m *DeleteCronJobsRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteCronJobsRequest) ProtoMessage()    {}
 func (*DeleteCronJobsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_7903244fefde60d5, []int{7}
+	return fileDescriptor_7903244fefde60d5, []int{9}
 }
 
 func (m *DeleteCronJobsRequest) XXX_Unmarshal(b []byte) error {
@@ -311,6 +455,20 @@ func (m *DeleteCronJobsRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_DeleteCronJobsRequest proto.InternalMessageInfo
 
+func (m *DeleteCronJobsRequest) GetKubeconfig() string {
+	if m != nil {
+		return m.Kubeconfig
+	}
+	return ""
+}
+
+func (m *DeleteCronJobsRequest) GetNamespace() string {
+	if m != nil {
+		return m.Namespace
+	}
+	return ""
+}
+
 func (m *DeleteCronJobsRequest) GetName() string {
 	if m != nil {
 		return m.Name
@@ -328,7 +486,7 @@ func (m *DeleteCronJobsResponse) Reset()         { *m = DeleteCronJobsResponse{}
 func (m *DeleteCronJobsResponse) String() string { return proto.CompactTextString(m) }
 func (*DeleteCronJobsResponse) ProtoMessage()    {}
 func (*DeleteCronJobsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_7903244fefde60d5, []int{8}
+	return fileDescriptor_7903244fefde60d5, []int{10}
 }
 
 func (m *DeleteCronJobsResponse) XXX_Unmarshal(b []byte) error {
@@ -351,6 +509,8 @@ var xxx_messageInfo_DeleteCronJobsResponse proto.InternalMessageInfo
 
 func init() {
 	proto.RegisterType((*CronJob)(nil), "pb.CronJob")
+	proto.RegisterType((*GetConfigMapRequest)(nil), "pb.GetConfigMapRequest")
+	proto.RegisterType((*GetConfigMapResponse)(nil), "pb.GetConfigMapResponse")
 	proto.RegisterType((*GetCronJobsRequest)(nil), "pb.GetCronJobsRequest")
 	proto.RegisterType((*GetCronJobsResponse)(nil), "pb.GetCronJobsResponse")
 	proto.RegisterType((*GetCronJobRequest)(nil), "pb.GetCronJobRequest")
@@ -364,26 +524,32 @@ func init() {
 func init() { proto.RegisterFile("k8s_service.proto", fileDescriptor_7903244fefde60d5) }
 
 var fileDescriptor_7903244fefde60d5 = []byte{
-	// 298 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x52, 0xc1, 0x4a, 0xc3, 0x40,
-	0x10, 0x6d, 0xa2, 0x68, 0x9d, 0xa0, 0xd0, 0xd1, 0xc4, 0x18, 0x10, 0xca, 0x8a, 0x58, 0x10, 0x72,
-	0x68, 0x2f, 0x05, 0x51, 0x84, 0x0a, 0x5a, 0x05, 0x0f, 0xd1, 0xbb, 0x24, 0x76, 0x0e, 0x62, 0xdb,
-	0xc4, 0xec, 0xea, 0xff, 0xf8, 0xa7, 0x62, 0x76, 0xb3, 0x4d, 0x36, 0x7b, 0x4b, 0xde, 0xcc, 0x7b,
-	0x6f, 0xde, 0x4b, 0x60, 0xf0, 0x39, 0xe5, 0x6f, 0x9c, 0xca, 0x9f, 0x8f, 0x77, 0x8a, 0x8b, 0x32,
-	0x17, 0x39, 0xba, 0x45, 0xc6, 0x4e, 0x61, 0x77, 0x56, 0xe6, 0xeb, 0xc7, 0x3c, 0x43, 0x84, 0xed,
-	0xe7, 0x74, 0x45, 0xa1, 0x33, 0x74, 0x46, 0x7b, 0x49, 0xf5, 0xcc, 0x8e, 0x00, 0xef, 0x49, 0xa8,
-	0x0d, 0x9e, 0xd0, 0xd7, 0x37, 0x71, 0xc1, 0x6e, 0xe0, 0xb0, 0x85, 0xf2, 0x22, 0x5f, 0x73, 0xc2,
-	0x0b, 0xe8, 0xd7, 0x58, 0xe8, 0x0c, 0xb7, 0x46, 0xde, 0xd8, 0x8b, 0x8b, 0x2c, 0x56, 0x58, 0xa2,
-	0x87, 0xec, 0x0c, 0x06, 0x1b, 0xbe, 0x12, 0xc5, 0x03, 0x70, 0xe7, 0x0b, 0x65, 0xee, 0xce, 0x17,
-	0xec, 0xaa, 0x69, 0xad, 0x3d, 0xce, 0xf5, 0xbd, 0xd5, 0xaa, 0x61, 0x51, 0xcf, 0xd8, 0x04, 0xfc,
-	0x59, 0x49, 0xa9, 0x20, 0xe3, 0x74, 0x8c, 0xa0, 0xff, 0x4a, 0xab, 0x62, 0x99, 0x8a, 0x3a, 0xa8,
-	0x7e, 0x67, 0x21, 0x04, 0x26, 0x49, 0xba, 0xb2, 0x4b, 0xf0, 0xef, 0x68, 0x49, 0x5d, 0x39, 0x5b,
-	0x67, 0x21, 0x04, 0xe6, 0xb2, 0x94, 0x19, 0xff, 0xba, 0x00, 0x4f, 0x53, 0xfe, 0x22, 0xbf, 0x02,
-	0xde, 0x82, 0xd7, 0xa8, 0x11, 0x83, 0xff, 0x24, 0xdd, 0xb6, 0xa3, 0xe3, 0x0e, 0xae, 0xae, 0xea,
-	0xe1, 0x35, 0xc0, 0x66, 0x80, 0x7e, 0x7b, 0xb1, 0xe6, 0x07, 0x26, 0xac, 0xe9, 0x0f, 0xb0, 0xdf,
-	0x0a, 0x8c, 0x27, 0xb2, 0x4c, 0x4b, 0x71, 0x51, 0x64, 0x1b, 0x35, 0x95, 0x5a, 0x99, 0xa5, 0x92,
-	0xb5, 0x33, 0xa9, 0x64, 0x6f, 0x88, 0xf5, 0xb2, 0x9d, 0xea, 0xdf, 0x9c, 0xfc, 0x05, 0x00, 0x00,
-	0xff, 0xff, 0x8b, 0xa9, 0x7c, 0x1c, 0xb0, 0x02, 0x00, 0x00,
+	// 389 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x54, 0x41, 0x4f, 0xf2, 0x40,
+	0x10, 0x85, 0xf6, 0x0b, 0x1f, 0x0c, 0x6a, 0x64, 0x94, 0x52, 0x1b, 0x35, 0x64, 0x13, 0x23, 0xa7,
+	0x1e, 0xf0, 0x42, 0x62, 0x34, 0x26, 0x35, 0x51, 0x24, 0x7a, 0xa8, 0xde, 0x4d, 0x0b, 0xa3, 0x21,
+	0x02, 0x2d, 0xdd, 0x62, 0xe2, 0x1f, 0xf6, 0x77, 0x98, 0x76, 0xdb, 0xb2, 0x2d, 0x3d, 0xf6, 0xb6,
+	0xfb, 0x66, 0x67, 0xe6, 0xcd, 0x9b, 0xd7, 0x42, 0xe7, 0x6b, 0xc4, 0xdf, 0x39, 0x05, 0xdf, 0xf3,
+	0x29, 0x99, 0x7e, 0xe0, 0x85, 0x1e, 0x2a, 0xbe, 0xcb, 0xce, 0xe0, 0xbf, 0x15, 0x78, 0xab, 0x27,
+	0xcf, 0x45, 0x84, 0x7f, 0x2f, 0xce, 0x92, 0xf4, 0x7a, 0xbf, 0x3e, 0x68, 0xd9, 0xf1, 0x99, 0x11,
+	0x1c, 0x3d, 0x50, 0x68, 0x79, 0xab, 0x8f, 0xf9, 0xe7, 0xb3, 0xe3, 0xdb, 0xb4, 0xde, 0x10, 0x0f,
+	0xf1, 0x1c, 0x60, 0xb2, 0x71, 0x69, 0x1a, 0xe3, 0x49, 0x82, 0x84, 0xe0, 0x29, 0xb4, 0xa2, 0x74,
+	0xee, 0x3b, 0x53, 0xd2, 0x95, 0x38, 0xbc, 0x05, 0xf0, 0x10, 0xd4, 0x09, 0xfd, 0xe8, 0x6a, 0x8c,
+	0x47, 0x47, 0x66, 0xc2, 0x71, 0xbe, 0x0d, 0xf7, 0xbd, 0x15, 0x27, 0xd4, 0xa0, 0x61, 0xc9, 0x3d,
+	0x92, 0x1b, 0xb3, 0x01, 0xa3, 0xf7, 0x82, 0x38, 0xaf, 0x84, 0x15, 0xbb, 0x15, 0xa3, 0x66, 0x35,
+	0x13, 0x0a, 0x97, 0xd0, 0x4c, 0x31, 0xbd, 0xde, 0x57, 0x07, 0xed, 0x61, 0xdb, 0xf4, 0x5d, 0x33,
+	0xc1, 0xec, 0x2c, 0xc8, 0x1c, 0xe8, 0x6c, 0xf3, 0xab, 0x11, 0xea, 0x00, 0x94, 0xf1, 0x2c, 0xd1,
+	0x49, 0x19, 0xcf, 0xd8, 0xb5, 0x3c, 0x76, 0xc6, 0xf0, 0x22, 0x5b, 0x61, 0xdc, 0xa0, 0x40, 0x30,
+	0x8d, 0xb1, 0x35, 0x74, 0xad, 0x80, 0x9c, 0x90, 0x2a, 0x95, 0x0d, 0x0d, 0x68, 0xbe, 0xd1, 0xd2,
+	0x5f, 0x38, 0x21, 0x25, 0x4c, 0xb3, 0x3b, 0xd3, 0x41, 0x2b, 0xb6, 0x14, 0x9c, 0xd9, 0x1c, 0xba,
+	0xf7, 0xb4, 0xa0, 0xaa, 0xc9, 0xa4, 0x16, 0x56, 0x25, 0x0b, 0xeb, 0xa0, 0x15, 0x5b, 0x09, 0x12,
+	0xc3, 0x5f, 0x05, 0x60, 0x32, 0xe2, 0xaf, 0xe2, 0xa3, 0x40, 0x0b, 0xf6, 0x64, 0x13, 0x62, 0x2f,
+	0x92, 0xb1, 0xc4, 0xfd, 0x86, 0xbe, 0x1b, 0x48, 0xc6, 0xaa, 0xe1, 0x1d, 0xb4, 0x25, 0x17, 0xa1,
+	0x96, 0x3e, 0xcd, 0x8f, 0x69, 0xf4, 0x76, 0xf0, 0xac, 0xc2, 0x0d, 0xc0, 0x36, 0x80, 0xdd, 0xfc,
+	0xc3, 0x34, 0x5f, 0x2b, 0xc2, 0x59, 0xfa, 0x23, 0xec, 0xe7, 0x34, 0xc7, 0x13, 0xe1, 0x86, 0x92,
+	0xcd, 0x1b, 0x46, 0x59, 0x48, 0xae, 0x94, 0x13, 0x4e, 0x54, 0x2a, 0x5d, 0x9b, 0xa8, 0x54, 0x2e,
+	0x33, 0xab, 0xb9, 0x8d, 0xf8, 0x7f, 0x73, 0xf5, 0x17, 0x00, 0x00, 0xff, 0xff, 0xba, 0x79, 0xd2,
+	0x11, 0x84, 0x04, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -398,6 +564,7 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type K8SServiceClient interface {
+	GetConfigMap(ctx context.Context, in *GetConfigMapRequest, opts ...grpc.CallOption) (*GetConfigMapResponse, error)
 	GetCronJobs(ctx context.Context, in *GetCronJobsRequest, opts ...grpc.CallOption) (*GetCronJobsResponse, error)
 	GetCronJob(ctx context.Context, in *GetCronJobRequest, opts ...grpc.CallOption) (*GetCronJobResponse, error)
 	CreateCronJob(ctx context.Context, in *CreateCronJobsRequest, opts ...grpc.CallOption) (*CreateCronJobsResponse, error)
@@ -410,6 +577,15 @@ type k8SServiceClient struct {
 
 func NewK8SServiceClient(cc *grpc.ClientConn) K8SServiceClient {
 	return &k8SServiceClient{cc}
+}
+
+func (c *k8SServiceClient) GetConfigMap(ctx context.Context, in *GetConfigMapRequest, opts ...grpc.CallOption) (*GetConfigMapResponse, error) {
+	out := new(GetConfigMapResponse)
+	err := c.cc.Invoke(ctx, "/pb.K8sService/GetConfigMap", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *k8SServiceClient) GetCronJobs(ctx context.Context, in *GetCronJobsRequest, opts ...grpc.CallOption) (*GetCronJobsResponse, error) {
@@ -450,6 +626,7 @@ func (c *k8SServiceClient) DeleteCronJob(ctx context.Context, in *DeleteCronJobs
 
 // K8SServiceServer is the server API for K8SService service.
 type K8SServiceServer interface {
+	GetConfigMap(context.Context, *GetConfigMapRequest) (*GetConfigMapResponse, error)
 	GetCronJobs(context.Context, *GetCronJobsRequest) (*GetCronJobsResponse, error)
 	GetCronJob(context.Context, *GetCronJobRequest) (*GetCronJobResponse, error)
 	CreateCronJob(context.Context, *CreateCronJobsRequest) (*CreateCronJobsResponse, error)
@@ -458,6 +635,24 @@ type K8SServiceServer interface {
 
 func RegisterK8SServiceServer(s *grpc.Server, srv K8SServiceServer) {
 	s.RegisterService(&_K8SService_serviceDesc, srv)
+}
+
+func _K8SService_GetConfigMap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetConfigMapRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(K8SServiceServer).GetConfigMap(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.K8sService/GetConfigMap",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(K8SServiceServer).GetConfigMap(ctx, req.(*GetConfigMapRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _K8SService_GetCronJobs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -536,6 +731,10 @@ var _K8SService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "pb.K8sService",
 	HandlerType: (*K8SServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetConfigMap",
+			Handler:    _K8SService_GetConfigMap_Handler,
+		},
 		{
 			MethodName: "GetCronJobs",
 			Handler:    _K8SService_GetCronJobs_Handler,
