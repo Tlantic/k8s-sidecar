@@ -48,17 +48,9 @@ func newKubeClientSet(kubeconfig string, kubeTimeout int) (*kubernetes.Clientset
 	var err error
 	var config *rest.Config
 
-	if kubeconfig != "" {
-		config, err = clientcmd.BuildConfigFromFlags("", kubeconfig)
-		if err != nil {
-			return nil, err
-		}
-	} else {
-
-		config, err = rest.InClusterConfig()
-		if err != nil {
-			return nil, err
-		}
+	config, err = clientcmd.BuildConfigFromFlags("", kubeconfig)
+	if err != nil {
+		return nil, err
 	}
 
 	if kubeTimeout > 0 {
@@ -73,13 +65,13 @@ func newKubeClientSet(kubeconfig string, kubeTimeout int) (*kubernetes.Clientset
 	return client, nil
 }
 
-func (km *KubeManager) GetConfigMap(namespace string, name string) (*v1.ConfigMap, error) {
-	cfgMap, err := km.client.CoreV1().ConfigMaps(namespace).Get(name, metav1.GetOptions{})
+func (km *KubeManager) GetConfigMap(name string) (*v1.ConfigMap, error) {
+	cfgMap, err := km.client.CoreV1().ConfigMaps(km.namespace).Get(name, metav1.GetOptions{})
 	return cfgMap, err
 
 }
 
-func (km *KubeManager) Watch(keys []string, namespace string, ch chan string, secretInformer informercorev1.ConfigMapInformer) {
+func (km *KubeManager) Watch(keys []string, ch chan string, secretInformer informercorev1.ConfigMapInformer) {
 	secretInformer.Informer().AddEventHandler(
 		cache.ResourceEventHandlerFuncs{
 			UpdateFunc: func(oldObj, newObj interface{}) {
@@ -87,7 +79,7 @@ func (km *KubeManager) Watch(keys []string, namespace string, ch chan string, se
 				key, _ := cache.MetaNamespaceKeyFunc(newObj)
 
 				for _, v := range keys {
-					if fmt.Sprintf("%s/%s", namespace, v) == key {
+					if fmt.Sprintf("%s/%s", km.namespace, v) == key {
 						ch <- data.Name
 					}
 				}

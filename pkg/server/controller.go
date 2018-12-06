@@ -7,26 +7,20 @@ import (
 	"encoding/json"
 	"github.com/Tlantic/k8s-sidecar/internal/manager"
 	"github.com/Tlantic/k8s-sidecar/internal/pb"
+	batchv1 "k8s.io/api/batch/v1"
 	"k8s.io/api/batch/v1beta1"
 )
 
 type K8sService struct {
+	manager *manager.KubeManager
 }
 
-func NewK8sService() *K8sService {
-	return &K8sService{}
+func NewK8sService(manager *manager.KubeManager) *K8sService {
+	return &K8sService{manager}
 }
 
 func (s *K8sService) GetConfigMap(ctx context.Context, in *pb.GetConfigMapRequest) (*pb.GetConfigMapResponse, error) {
-	cronManager, err := manager.NewKube(&manager.KubeManagerOptions{
-		Config:    in.Kubeconfig,
-		Namespace: in.Namespace,
-		Timeout:   10,
-	})
-	if err != nil {
-		return nil, err
-	}
-	data, err := cronManager.GetConfigMap(in.Namespace, in.Key)
+	data, err := s.manager.GetConfigMap(in.Key)
 
 	if err != nil {
 		return &pb.GetConfigMapResponse{}, err
@@ -38,15 +32,7 @@ func (s *K8sService) GetConfigMap(ctx context.Context, in *pb.GetConfigMapReques
 }
 
 func (s *K8sService) GetCronJobs(ctx context.Context, in *pb.GetCronJobsRequest) (*pb.GetCronJobsResponse, error) {
-	cronManager, err := manager.NewKube(&manager.KubeManagerOptions{
-		Config:    in.Kubeconfig,
-		Namespace: in.Namespace,
-		Timeout:   10,
-	})
-	if err != nil {
-		return nil, err
-	}
-	list, err := cronManager.ListCronJobs()
+	list, err := s.manager.ListCronJobs()
 	if err != nil {
 		return nil, err
 	}
@@ -64,15 +50,7 @@ func (s *K8sService) GetCronJobs(ctx context.Context, in *pb.GetCronJobsRequest)
 }
 
 func (s *K8sService) GetCronJob(ctx context.Context, in *pb.GetCronJobRequest) (*pb.GetCronJobResponse, error) {
-	cronManager, err := manager.NewKube(&manager.KubeManagerOptions{
-		Config:    in.Kubeconfig,
-		Namespace: in.Namespace,
-		Timeout:   10,
-	})
-	if err != nil {
-		return nil, err
-	}
-	cronJob, err := cronManager.GetCronJob(in.Id)
+	cronJob, err := s.manager.GetCronJob(in.Id)
 	return &pb.GetCronJobResponse{
 		CronJob: &pb.CronJob{
 			Name: cronJob.Name,
@@ -81,33 +59,28 @@ func (s *K8sService) GetCronJob(ctx context.Context, in *pb.GetCronJobRequest) (
 }
 
 func (s *K8sService) CreateCronJob(ctx context.Context, in *pb.CreateCronJobsRequest) (*pb.CreateCronJobsResponse, error) {
-	cronManager, err := manager.NewKube(&manager.KubeManagerOptions{
-		Config:    in.Kubeconfig,
-		Namespace: in.Namespace,
-		Timeout:   10,
-	})
-	if err != nil {
-		return nil, err
-	}
 	var jobTemplateData v1beta1.CronJob
-	err = json.Unmarshal([]byte(in.Template), &jobTemplateData)
+	err := json.Unmarshal([]byte(in.Template), &jobTemplateData)
 	if err != nil {
 		return nil, err
 	}
 
-	err = cronManager.CreateCronJob(&jobTemplateData, false)
+	err = s.manager.CreateCronJob(&jobTemplateData, false)
 	return &pb.CreateCronJobsResponse{}, err
 }
 
 func (s *K8sService) DeleteCronJob(ctx context.Context, in *pb.DeleteCronJobsRequest) (*pb.DeleteCronJobsResponse, error) {
-	cronManager, err := manager.NewKube(&manager.KubeManagerOptions{
-		Config:    in.Kubeconfig,
-		Namespace: in.Namespace,
-		Timeout:   10,
-	})
+	err := s.manager.DeleteCronJob(in.Name)
+	return &pb.DeleteCronJobsResponse{}, err
+}
+
+func (s *K8sService) CreateJob(ctx context.Context, in *pb.CreateJobRequest) (*pb.CreateJobResponse, error) {
+	var jobTemplateData batchv1.Job
+	err := json.Unmarshal([]byte(in.Template), &jobTemplateData)
 	if err != nil {
 		return nil, err
 	}
-	err = cronManager.DeleteCronJob(in.Name)
-	return &pb.DeleteCronJobsResponse{}, err
+
+	err = s.manager.CreateJob(&jobTemplateData, false)
+	return &pb.CreateJobResponse{}, err
 }
