@@ -58,7 +58,7 @@ func (s *K8sService) GetCronJob(ctx context.Context, in *pb.GetCronJobRequest) (
 	}, err
 }
 
-func (s *K8sService) CreateCronJob(ctx context.Context, in *pb.CreateCronJobsRequest) (*pb.CreateCronJobsResponse, error) {
+func (s *K8sService) CreateCronJob(ctx context.Context, in *pb.CreateCronJobRequest) (*pb.CreateCronJobResponse, error) {
 	var jobTemplateData v1beta1.CronJob
 	err := json.Unmarshal([]byte(in.Template), &jobTemplateData)
 	if err != nil {
@@ -66,12 +66,39 @@ func (s *K8sService) CreateCronJob(ctx context.Context, in *pb.CreateCronJobsReq
 	}
 
 	err = s.manager.CreateCronJob(&jobTemplateData, false)
-	return &pb.CreateCronJobsResponse{}, err
+	return &pb.CreateCronJobResponse{}, err
 }
 
-func (s *K8sService) DeleteCronJob(ctx context.Context, in *pb.DeleteCronJobsRequest) (*pb.DeleteCronJobsResponse, error) {
+func (s *K8sService) DeleteCronJob(ctx context.Context, in *pb.DeleteCronJobRequest) (*pb.DeleteCronJobResponse, error) {
 	err := s.manager.DeleteCronJob(in.Name)
-	return &pb.DeleteCronJobsResponse{}, err
+	return &pb.DeleteCronJobResponse{}, err
+}
+
+func (s *K8sService) GetJobs(ctx context.Context, in *pb.GetJobsRequest) (*pb.GetJobsResponse, error) {
+	list, err := s.manager.ListJobs()
+	if err != nil {
+		return nil, err
+	}
+
+	cronJobs := make([]*pb.Job, len(list.Items))
+	for index, item := range list.Items {
+		cronJobs[index] = &pb.Job{
+			Name: item.Name,
+		}
+	}
+
+	return &pb.GetJobsResponse{
+		Jobs: cronJobs,
+	}, nil
+}
+
+func (s *K8sService) GetJob(ctx context.Context, in *pb.GetJobRequest) (*pb.GetJobResponse, error) {
+	cronJob, err := s.manager.GetJob(in.Id)
+	return &pb.GetJobResponse{
+		Job: &pb.Job{
+			Name: cronJob.Name,
+		},
+	}, err
 }
 
 func (s *K8sService) CreateJob(ctx context.Context, in *pb.CreateJobRequest) (*pb.CreateJobResponse, error) {

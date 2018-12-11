@@ -9,14 +9,12 @@ message CronJob {
 message GetConfigMapRequest {
     string Key = 1;
 }
-
 message GetConfigMapResponse {
     string Config = 1;
 }
 
 message GetCronJobsRequest {
 }
-
 message GetCronJobsResponse {
     repeated CronJob CronJobs = 1;
 }
@@ -24,49 +22,67 @@ message GetCronJobsResponse {
 message GetCronJobRequest {
     string Id = 1;
 }
-
 message GetCronJobResponse {
     CronJob CronJob = 1;
 }
 
-message CreateCronJobsRequest {
+message CreateCronJobRequest {
     string Template = 1;
 }
-
-message CreateCronJobsResponse {
+message CreateCronJobResponse {
 }
 
-message DeleteCronJobsRequest {
+message DeleteCronJobRequest {
     string Name = 1;
 }
+message DeleteCronJobResponse {
+}
 
-message DeleteCronJobsResponse {
+message Job {
+    string name = 1;
+}
+
+message GetJobsRequest {
+}
+message GetJobsResponse {
+    repeated Job Jobs = 1;
+}
+
+message GetJobRequest {
+    string Id = 1;
+}
+message GetJobResponse {
+    Job Job = 1;
 }
 
 message CreateJobRequest {
     string Template = 1;
 }
-
 message CreateJobResponse {
 }
 
 message DeleteJobRequest {
     string Name = 1;
 }
-
 message DeleteJobResponse {
 }
 
 service K8sService {
     rpc GetConfigMap (GetConfigMapRequest) returns (GetConfigMapResponse) {
     }
+
     rpc GetCronJobs (GetCronJobsRequest) returns (GetCronJobsResponse) {
     }
     rpc GetCronJob (GetCronJobRequest) returns (GetCronJobResponse) {
     }
-    rpc CreateCronJob (CreateCronJobsRequest) returns (CreateCronJobsResponse) {
+    rpc CreateCronJob (CreateCronJobRequest) returns (CreateCronJobResponse) {
     }
-    rpc DeleteCronJob (DeleteCronJobsRequest) returns (DeleteCronJobsResponse) {
+    rpc DeleteCronJob (DeleteCronJobRequest) returns (DeleteCronJobResponse) {
+    }
+
+    rpc GetJobs (GetJobsRequest) returns (GetJobsResponse) {
+    }
+    rpc GetJob (GetJobRequest) returns (GetJobResponse) {
     }
     rpc CreateJob (CreateJobRequest) returns (CreateJobResponse) {
     }

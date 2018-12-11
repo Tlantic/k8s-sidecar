@@ -1,4 +1,4 @@
-FROM golang:1.11.2 as builder
+FROM golang:1.11.1 as builder
 RUN mkdir /build
 ADD . /build/
 WORKDIR /build

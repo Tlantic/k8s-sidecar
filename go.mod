@@ -2,7 +2,7 @@ module github.com/Tlantic/k8s-sidecar
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/gogo/protobuf v1.1.1 // indirect
+	github.com/gogo/protobuf v1.2.0 // indirect
 	github.com/golang/groupcache v0.0.0-20181024230925-c65c006176ff // indirect
 	github.com/golang/protobuf v1.2.0
 	github.com/google/btree v0.0.0-20180813153112-4030bb1f1f0c // indirect
@@ -19,14 +19,14 @@ require (
 	github.com/spf13/pflag v1.0.3 // indirect
 	github.com/stretchr/testify v1.2.2 // indirect
 	golang.org/x/crypto v0.0.0-20181203042331-505ab145d0a9 // indirect
-	golang.org/x/net v0.0.0-20181201002055-351d144fa1fc
+	golang.org/x/net v0.0.0-20181207154023-610586996380
 	golang.org/x/time v0.0.0-20181108054448-85acf8d2951c // indirect
 	google.golang.org/grpc v1.17.0
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.2.2 // indirect
-	k8s.io/api v0.0.0-20181130031204-d04500c8c3dd
-	k8s.io/apimachinery v0.0.0-20181204150028-eb8c8024849b
-	k8s.io/client-go v9.0.0+incompatible
+	k8s.io/api v0.0.0-20181204000039-89a74a8d264d
+	k8s.io/apimachinery v0.0.0-20181127025237-2b1284ed4c93
+	k8s.io/client-go v10.0.0+incompatible
 	k8s.io/klog v0.1.0 // indirect
 	sigs.k8s.io/yaml v1.1.0 // indirect
 )
