@@ -50,6 +50,13 @@ message CreateJobRequest {
 message CreateJobResponse {
 }
 
+message DeleteJobRequest {
+    string Name = 1;
+}
+
+message DeleteJobResponse {
+}
+
 service K8sService {
     rpc GetConfigMap (GetConfigMapRequest) returns (GetConfigMapResponse) {
     }
@@ -62,5 +69,7 @@ service K8sService {
     rpc DeleteCronJob (DeleteCronJobsRequest) returns (DeleteCronJobsResponse) {
     }
     rpc CreateJob (CreateJobRequest) returns (CreateJobResponse) {
+    }
+    rpc DeleteJob (DeleteJobRequest) returns (DeleteJobResponse) {
     }
 }

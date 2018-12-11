@@ -23,8 +23,7 @@ func TestNewK8sService(t *testing.T) {
 
 	t.Run("GetConfigMap", func(t *testing.T) {
 		res, err := service.GetConfigMap(context.Background(), &pb.GetConfigMapRequest{
-			Namespace: os.Getenv("K8S_NAMESPACE"),
-			Key:       "mrs-service-scheduler",
+			Key: "mrs-service-scheduler",
 		})
 		if err != nil {
 			t.Error(err)

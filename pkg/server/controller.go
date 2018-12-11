@@ -84,3 +84,8 @@ func (s *K8sService) CreateJob(ctx context.Context, in *pb.CreateJobRequest) (*p
 	err = s.manager.CreateJob(&jobTemplateData, false)
 	return &pb.CreateJobResponse{}, err
 }
+
+func (s *K8sService) DeleteJob(ctx context.Context, in *pb.DeleteJobRequest) (*pb.DeleteJobResponse, error) {
+	err := s.manager.DeleteJob(in.Name)
+	return &pb.DeleteJobResponse{}, err
+}
