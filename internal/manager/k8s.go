@@ -99,14 +99,14 @@ func (km *KubeManager) GetCronJob(name string) (*batchv1beta.CronJob, error) {
 }
 
 //CreateCronJob ...
-func (km *KubeManager) CreateCronJob(job *batchv1beta.CronJob, wait bool) error {
-	job.Spec.ConcurrencyPolicy = batchv1beta.ReplaceConcurrent
-	if _, err := km.client.BatchV1beta1().CronJobs(km.namespace).Create(job); err != nil {
+func (km *KubeManager) CreateCronJob(cronJob *batchv1beta.CronJob, wait bool) error {
+	cronJob.Spec.ConcurrencyPolicy = batchv1beta.ReplaceConcurrent
+	if _, err := km.client.BatchV1beta1().CronJobs(km.namespace).Create(cronJob); err != nil {
 		return err
 	}
 
 	if wait {
-		return km.WaitForCronJob(job.Name, km.namespace, 2*time.Minute)
+		return km.WaitForCronJob(cronJob.Name, km.namespace, 2*time.Minute)
 	}
 
 	return nil
@@ -156,7 +156,10 @@ func (km *KubeManager) ListJobs() (*batchv1.JobList, error) {
 
 //DeleteJob ...
 func (km *KubeManager) DeleteJob(name string) error {
-	return km.client.BatchV1().Jobs(km.namespace).Delete(name, &metav1.DeleteOptions{})
+	policy := metav1.DeletePropagationBackground
+	return km.client.BatchV1().Jobs(km.namespace).Delete(name, &metav1.DeleteOptions{
+		PropagationPolicy: &policy,
+	})
 }
 
 //CreateJob ...
