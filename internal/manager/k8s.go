@@ -12,6 +12,7 @@ import (
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/cache"
 	"k8s.io/client-go/tools/clientcmd"
+	"strings"
 	"time"
 )
 
@@ -133,7 +134,7 @@ func (km *KubeManager) WaitForCronJob(name, namespace string, timeout time.Durat
 		if err != nil {
 			return false, err
 		}
-		if len(job.Status.Active) == 0 {
+		if strings.Compare(job.Name, name) != 0 {
 			return false, nil
 		}
 		return true, nil
