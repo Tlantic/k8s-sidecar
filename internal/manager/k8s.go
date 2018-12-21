@@ -129,7 +129,7 @@ func (km *KubeManager) ListCronJobs() (*batchv1beta.CronJobList, error) {
 
 //WaitForCronJob ...
 func (km *KubeManager) WaitForCronJob(name, namespace string, timeout time.Duration) error {
-	return wait.Poll(time.Second*5, timeout, func() (bool, error) {
+	return wait.Poll(time.Microsecond*10, timeout, func() (bool, error) {
 		job, err := km.GetCronJob(name)
 		if err != nil {
 			return false, err
@@ -179,7 +179,7 @@ func (km *KubeManager) CreateJob(job *batchv1.Job, wait bool) error {
 
 // WaitForJob waits until job deployment has completed
 func (km *KubeManager) WaitForJob(name, namespace string, timeout time.Duration) error {
-	return wait.Poll(time.Second*5, timeout, func() (bool, error) {
+	return wait.Poll(time.Microsecond*5, timeout, func() (bool, error) {
 		job, err := km.GetJob(name)
 		if err != nil {
 			return false, err
