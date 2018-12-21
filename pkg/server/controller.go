@@ -65,7 +65,7 @@ func (s *K8sService) CreateCronJob(ctx context.Context, in *pb.CreateCronJobRequ
 		return nil, err
 	}
 
-	err = s.manager.CreateCronJob(&jobTemplateData, false)
+	err = s.manager.CreateCronJob(&jobTemplateData, true)
 	return &pb.CreateCronJobResponse{}, err
 }
 
@@ -108,7 +108,7 @@ func (s *K8sService) CreateJob(ctx context.Context, in *pb.CreateJobRequest) (*p
 		return nil, err
 	}
 
-	err = s.manager.CreateJob(&jobTemplateData, false)
+	err = s.manager.CreateJob(&jobTemplateData, true)
 	return &pb.CreateJobResponse{}, err
 }
 
