@@ -8,8 +8,9 @@ import (
 	"github.com/Tlantic/k8s-sidecar/internal/manager"
 	"github.com/Tlantic/k8s-sidecar/internal/pb"
 	batchv1 "k8s.io/api/batch/v1"
-	"k8s.io/api/batch/v1beta1"
 )
+
+var _ pb.K8SServiceServer = (*K8sService)(nil)
 
 type K8sService struct {
 	manager *manager.KubeManager
@@ -20,7 +21,7 @@ func NewK8sService(manager *manager.KubeManager) *K8sService {
 }
 
 func (s *K8sService) GetConfigMap(ctx context.Context, in *pb.GetConfigMapRequest) (*pb.GetConfigMapResponse, error) {
-	data, err := s.manager.GetConfigMap(in.Key)
+	data, err := s.manager.GetConfigMap(ctx, in.Key)
 
 	if err != nil {
 		return &pb.GetConfigMapResponse{}, err
@@ -31,8 +32,8 @@ func (s *K8sService) GetConfigMap(ctx context.Context, in *pb.GetConfigMapReques
 	}, nil
 }
 
-func (s *K8sService) GetCronJobs(ctx context.Context, in *pb.GetCronJobsRequest) (*pb.GetCronJobsResponse, error) {
-	list, err := s.manager.ListCronJobs()
+func (s *K8sService) GetCronJobs(ctx context.Context, _ *pb.GetCronJobsRequest) (*pb.GetCronJobsResponse, error) {
+	list, err := s.manager.ListCronJobs(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -50,32 +51,36 @@ func (s *K8sService) GetCronJobs(ctx context.Context, in *pb.GetCronJobsRequest)
 }
 
 func (s *K8sService) GetCronJob(ctx context.Context, in *pb.GetCronJobRequest) (*pb.GetCronJobResponse, error) {
-	cronJob, err := s.manager.GetCronJob(in.Id)
+	cronJob, err := s.manager.GetCronJob(ctx, in.Id)
+	if err != nil {
+		return nil, err
+	}
+
 	return &pb.GetCronJobResponse{
 		CronJob: &pb.CronJob{
 			Name: cronJob.Name,
 		},
-	}, err
+	}, nil
 }
 
 func (s *K8sService) CreateCronJob(ctx context.Context, in *pb.CreateCronJobRequest) (*pb.CreateCronJobResponse, error) {
-	var jobTemplateData v1beta1.CronJob
+	var jobTemplateData batchv1.CronJob
 	err := json.Unmarshal([]byte(in.Template), &jobTemplateData)
 	if err != nil {
 		return nil, err
 	}
 
-	err = s.manager.CreateCronJob(&jobTemplateData, true)
+	err = s.manager.CreateCronJob(ctx, &jobTemplateData, true)
 	return &pb.CreateCronJobResponse{}, err
 }
 
 func (s *K8sService) DeleteCronJob(ctx context.Context, in *pb.DeleteCronJobRequest) (*pb.DeleteCronJobResponse, error) {
-	err := s.manager.DeleteCronJob(in.Name)
+	err := s.manager.DeleteCronJob(ctx, in.Name)
 	return &pb.DeleteCronJobResponse{}, err
 }
 
-func (s *K8sService) GetJobs(ctx context.Context, in *pb.GetJobsRequest) (*pb.GetJobsResponse, error) {
-	list, err := s.manager.ListJobs()
+func (s *K8sService) GetJobs(ctx context.Context, _ *pb.GetJobsRequest) (*pb.GetJobsResponse, error) {
+	list, err := s.manager.ListJobs(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -93,12 +98,16 @@ func (s *K8sService) GetJobs(ctx context.Context, in *pb.GetJobsRequest) (*pb.Ge
 }
 
 func (s *K8sService) GetJob(ctx context.Context, in *pb.GetJobRequest) (*pb.GetJobResponse, error) {
-	cronJob, err := s.manager.GetJob(in.Id)
+	cronJob, err := s.manager.GetJob(ctx, in.Id)
+	if err != nil {
+		return nil, err
+	}
+
 	return &pb.GetJobResponse{
 		Job: &pb.Job{
 			Name: cronJob.Name,
 		},
-	}, err
+	}, nil
 }
 
 func (s *K8sService) CreateJob(ctx context.Context, in *pb.CreateJobRequest) (*pb.CreateJobResponse, error) {
@@ -108,11 +117,11 @@ func (s *K8sService) CreateJob(ctx context.Context, in *pb.CreateJobRequest) (*p
 		return nil, err
 	}
 
-	err = s.manager.CreateJob(&jobTemplateData, true)
+	err = s.manager.CreateJob(ctx, &jobTemplateData, true)
 	return &pb.CreateJobResponse{}, err
 }
 
 func (s *K8sService) DeleteJob(ctx context.Context, in *pb.DeleteJobRequest) (*pb.DeleteJobResponse, error) {
-	err := s.manager.DeleteJob(in.Name)
+	err := s.manager.DeleteJob(ctx, in.Name)
 	return &pb.DeleteJobResponse{}, err
 }
