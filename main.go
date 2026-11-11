@@ -2,14 +2,15 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"net"
+	"os"
+
 	"github.com/Tlantic/k8s-sidecar/internal/manager"
 	"github.com/Tlantic/k8s-sidecar/internal/pb"
 	"github.com/Tlantic/k8s-sidecar/pkg/server"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
-	"log"
-	"net"
-	"os"
 )
 
 func main() {
